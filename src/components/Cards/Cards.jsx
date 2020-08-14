@@ -1,58 +1,63 @@
 import React, { useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Box } from '@material-ui/core';
 import gsap from 'gsap';
 
-import FirstCard from './FirstCard';
-import SecondCard from './SecondCard';
+import LandingCard from './LandingCard';
+import AuthCard from './AuthCard';
+import { AUTH_TYPES } from '../../constants';
+import { setUserAuth, setGuestAuth } from '../../store/actions';
 
 const Cards = () => {
-  const [firstOnTop, setFirstOnTop] = useState(true);
-  const firstCardRef = useRef(null);
-  const secondCardRef = useRef(null);
+  const [landingOnTop, setLandingOnTop] = useState(true);
+  const landingCardRef = useRef(null);
+  const authCardRef = useRef(null);
+  const dispatch = useDispatch();
 
-  const switchCards = () => {
-    const firstCard = firstCardRef.current;
-    const secondCard = secondCardRef.current;
+  const switchCards = (type) => {
+    const landingCard = landingCardRef.current;
+    const authCard = authCardRef.current;
 
-    setTimeout(() => setFirstOnTop(false), 500);
+    setTimeout(() => {
+      setLandingOnTop(false);
+      type === AUTH_TYPES.USER && dispatch(setUserAuth());
+      type === AUTH_TYPES.GUEST && dispatch(setGuestAuth());
+    }, 500);
 
     const tl = gsap.timeline();
 
-    tl.to(firstCard, {
+    tl.to(landingCard, {
       x: '+=175',
       y: '-=40',
       duration: 0.4,
       ease: 'power3.inOut',
     })
       .to(
-        secondCard,
+        authCard,
         { x: '-=175', y: '+=40', duration: 0.4, ease: 'power3.inOut' },
         '-=0.4',
       )
-      .to(firstCard, {
+      .to(landingCard, {
         x: '-=235',
         y: '+=90',
         duration: 0.4,
         ease: 'power3.inOut',
       })
       .to(
-        secondCard,
+        authCard,
         { x: '+=235', y: '-=90', duration: 0.4, ease: 'power3.inOut' },
         '-=0.4',
       );
-
-    // gsap.to(firstCard, { x: '+=175', y: '-=40', duration: 1 });
-    // gsap.to(secondCard, { x: '-=175', y: '+=40', duration: 1 });
   };
 
   return (
     <Box position="relative" width={400} height={500}>
-      <FirstCard
-        ref={firstCardRef}
-        isOnTop={firstOnTop}
+      <LandingCard
+        ref={landingCardRef}
+        isOnTop={landingOnTop}
         switchCards={switchCards}
       />
-      <SecondCard ref={secondCardRef} isOnTop={!firstOnTop} />
+      <AuthCard ref={authCardRef} isOnTop={!landingOnTop} />
     </Box>
   );
 };

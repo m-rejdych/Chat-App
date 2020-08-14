@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, forwardRef } from 'react';
+import { useDispatch } from 'react-redux';
 import {
   Card,
   CardContent,
@@ -10,6 +11,7 @@ import {
 import gsap from 'gsap';
 
 import { ReactComponent as MessagesSvg } from '../../../assets/MessagesSvg.svg';
+import { AUTH_TYPES } from '../../../constants';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -39,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const FirstCard = forwardRef(({ switchCards, isOnTop }, ref) => {
+const LandingCard = forwardRef(({ switchCards, isOnTop }, ref) => {
   const classes = useStyles({ isOnTop });
   const elementRef = useRef(null);
 
@@ -103,8 +105,8 @@ const FirstCard = forwardRef(({ switchCards, isOnTop }, ref) => {
       );
   }, []);
 
-  const handleClick = () => {
-    switchCards();
+  const handleClick = (type) => {
+    switchCards(type);
   };
 
   return (
@@ -129,11 +131,15 @@ const FirstCard = forwardRef(({ switchCards, isOnTop }, ref) => {
               className={classes.button}
               color="secondary"
               variant="contained"
-              onClick={handleClick}
+              onClick={() => handleClick(AUTH_TYPES.USER)}
             >
               Sign up
             </Button>
-            <Button className={classes.button} variant="outlined">
+            <Button
+              className={classes.button}
+              variant="outlined"
+              onClick={() => handleClick(AUTH_TYPES.GUEST)}
+            >
               Enter as guest
             </Button>
           </CardActions>
@@ -143,4 +149,4 @@ const FirstCard = forwardRef(({ switchCards, isOnTop }, ref) => {
   );
 });
 
-export default FirstCard;
+export default LandingCard;
