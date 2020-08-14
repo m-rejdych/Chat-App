@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Box } from '@material-ui/core';
 import gsap from 'gsap';
@@ -13,6 +13,36 @@ const Cards = () => {
   const landingCardRef = useRef(null);
   const authCardRef = useRef(null);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    const landingCard = landingCardRef.current;
+    const authCard = authCardRef.current;
+
+    const tl = gsap.timeline();
+
+    tl.fromTo(
+      landingCard,
+      { x: '-=30', y: '+=25' },
+      { x: '+=0', y: '+=0', duration: 5 },
+    )
+      .fromTo(
+        authCard,
+        { x: '+=30', y: '-=25' },
+        { x: '+=0', y: '+=0', duration: 5 },
+        '-=5',
+      )
+      .to(landingCard, {
+        x: '+=30',
+        y: '-=25',
+        duration: 1,
+        ease: 'power3.inOut',
+      })
+      .to(
+        authCard,
+        { x: '-=30', y: '+=25', duration: 1, ease: 'power3.inOut' },
+        '-=1',
+      );
+  }, []);
 
   const switchCards = (type) => {
     const landingCard = landingCardRef.current;

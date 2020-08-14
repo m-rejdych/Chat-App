@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, forwardRef } from 'react';
-import { useDispatch } from 'react-redux';
 import {
   Card,
   CardContent,
@@ -44,9 +43,14 @@ const useStyles = makeStyles((theme) => ({
 const LandingCard = forwardRef(({ switchCards, isOnTop }, ref) => {
   const classes = useStyles({ isOnTop });
   const elementRef = useRef(null);
+  const userButtonRef = useRef(null);
+  const guestButtonRef = useRef(null);
 
   useEffect(() => {
     const [element] = elementRef.current.children;
+
+    const userButton = userButtonRef.current;
+    const guestButton = guestButtonRef.current;
 
     const circle = element.getElementById('circle');
     const eclipse = element.getElementById('eclipse');
@@ -59,9 +63,24 @@ const LandingCard = forwardRef(({ switchCards, isOnTop }, ref) => {
     const leaf4 = element.getElementById('leaf-4');
 
     const tl = gsap.timeline();
-    tl.set([circle, eclipse, chat1, chat2, chat3, leaf1, leaf2, leaf3, leaf4], {
-      autoAlpha: 0,
-    });
+    tl.set(
+      [
+        circle,
+        eclipse,
+        chat1,
+        chat2,
+        chat3,
+        leaf1,
+        leaf2,
+        leaf3,
+        leaf4,
+        userButton,
+        guestButton,
+      ],
+      {
+        autoAlpha: 0,
+      },
+    );
     tl.set([leaf1, leaf2, leaf3, leaf4], { transformOrigin: 'center bottom' });
 
     tl.fromTo(
@@ -102,6 +121,11 @@ const LandingCard = forwardRef(({ switchCards, isOnTop }, ref) => {
           ease: 'slow',
           stagger: 0.3,
         },
+      )
+      .fromTo(
+        [userButton, guestButton],
+        { y: '+=30' },
+        { y: '-=30', duration: 0.5, autoAlpha: 1, ease: 'power3.inOut' },
       );
   }, []);
 
@@ -128,6 +152,7 @@ const LandingCard = forwardRef(({ switchCards, isOnTop }, ref) => {
           </CardContent>
           <CardActions>
             <Button
+              ref={userButtonRef}
               className={classes.button}
               color="secondary"
               variant="contained"
@@ -136,6 +161,7 @@ const LandingCard = forwardRef(({ switchCards, isOnTop }, ref) => {
               Sign up
             </Button>
             <Button
+              ref={guestButtonRef}
               className={classes.button}
               variant="outlined"
               onClick={() => handleClick(AUTH_TYPES.GUEST)}
