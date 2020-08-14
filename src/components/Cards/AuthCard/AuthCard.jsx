@@ -8,6 +8,10 @@ import GuestAuth from '../../../pages/Auth/GuestAuth';
 const useStyles = makeStyles((theme) => ({
   root: {
     position: 'absolute',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-around',
+    alignItems: 'center',
     left: -30,
     bottom: -25,
     backgroundColor: theme.palette.secondary.main,

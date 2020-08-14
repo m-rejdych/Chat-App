@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
     width: 300,
     height: 220,
   },
-  typography: {
+  header: {
     color: '#fff',
   },
   button: {
@@ -118,7 +118,7 @@ const LandingCard = forwardRef(({ switchCards, isOnTop }, ref) => {
             titleTypographyProps={{
               variant: 'h3',
               align: 'center',
-              className: classes.typography,
+              className: classes.header,
             }}
           />
           <CardContent>
