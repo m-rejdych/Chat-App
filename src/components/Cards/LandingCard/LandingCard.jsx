@@ -81,7 +81,6 @@ const LandingCard = forwardRef(({ switchCards, isOnTop }, ref) => {
         autoAlpha: 0,
       },
     );
-    tl.set([leaf1, leaf2, leaf3, leaf4], { transformOrigin: 'center bottom' });
 
     tl.fromTo(
       eclipse,

@@ -9,8 +9,11 @@ import {
 } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
-  header: {
+  headerText: {
     color: '#fff',
+  },
+  cardContent: {
+    width: '100%',
   },
 }));
 
@@ -21,19 +24,20 @@ const GuestAuth = () => {
   return (
     <>
       <CardHeader
+        className={classes.cardHeader}
         titleTypographyProps={{
           variant: 'h4',
-          className: classes.header,
-          align: 'center',
+          className: classes.headerText,
         }}
         title="Enter your name"
       />
-      <CardContent>
+      <CardContent className={classes.cardContent}>
         <TextField
           variant="filled"
           label="Name"
           value={value}
           onChange={(e) => setValue(e.target.value)}
+          fullWidth
         />
       </CardContent>
       <CardActions>
