@@ -39,7 +39,7 @@ const UserAuth = () => {
 
   const initialValues = isLoggingIn
     ? {
-        name: '',
+        email: '',
         password: '',
       }
     : {
@@ -48,65 +48,55 @@ const UserAuth = () => {
         password: '',
       };
 
-  const fields = [
+  const fieldsData = [
     isLoggingIn || {
       name: 'name',
       type: 'text',
       label: 'Name',
-      validate: (value) => {
-        const errorMessage = value.length < 2 && 'Name is too short!';
-        return errorMessage;
-      },
+      validate: (value) => value.length < 2 && 'Name is too short!',
     },
     {
       name: 'email',
       type: 'email',
       label: 'Email',
-      validate: (value) => {
-        const errorMessage =
-          !/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
-            value,
-          ) && 'Enter a valid email address!';
-        return errorMessage;
-      },
+      validate: (value) =>
+        !/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+          value,
+        ) && 'Enter a valid email address!',
     },
     {
       name: 'password',
       type: 'password',
       label: 'Password',
-      validate: (value) => {
-        const errorMessage =
-          !/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(value) &&
-          'Password must be at least 8 characters long and contain letter and number!';
-        return errorMessage;
-      },
+      validate: (value) =>
+        !/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(value) &&
+        'Password must be at least 8 characters long and contain letter and number!',
     },
   ];
 
-  const renderFields = () =>
-    fields.map(
-      ({ name, type, label, validate }) =>
-        name && (
-          <Field name={name} validate={validate}>
-            {({ field, meta }) => (
-              <TextField
-                {...field}
-                className={classes.textField}
-                variant="filled"
-                type={type}
-                label={label}
-                error={meta.error && meta.touched}
-                helperText={meta.touched && meta.error}
-                fullWidth
-              />
-            )}
-          </Field>
-        ),
-    );
-
-  const form = (
-    <Formik initialValues={initialValues}>{() => renderFields()}</Formik>
+  const fields = fieldsData.map(
+    ({ name, validate, ...rest }) =>
+      name && (
+        <Field key={name} name={name} validate={validate}>
+          {({ field, meta }) => (
+            <TextField
+              {...field}
+              {...rest}
+              className={classes.textField}
+              variant="filled"
+              error={meta.error && meta.touched}
+              helperText={meta.touched && meta.error}
+              fullWidth
+            />
+          )}
+        </Field>
+      ),
   );
+
+  const handleSwitch = (handleFormReset) => {
+    setIsLoggingIn(!isLoggingIn);
+    handleFormReset();
+  };
 
   return (
     <>
@@ -117,23 +107,33 @@ const UserAuth = () => {
         }}
         title={isLoggingIn ? 'Log in' : 'Sign up'}
       />
-      <CardContent className={classes.cardContent}>{form}</CardContent>
-      <CardActions className={classes.cardActions}>
-        <Button variant="contained" color="primary">
-          {isLoggingIn ? 'Log in' : 'Sign up'}
-        </Button>
-        <FormControlLabel
-          classes={{ label: classes.switchText }}
-          control={
-            <Switch
-              checked={isLoggingIn}
-              onChange={() => setIsLoggingIn(!isLoggingIn)}
-              color="primary"
-            />
-          }
-          label={isLoggingIn ? 'Sign up' : 'Log in'}
-        />
-      </CardActions>
+      <Formik initialValues={initialValues}>
+        {({ isValid, dirty, handleReset }) => (
+          <>
+            <CardContent className={classes.cardContent}>{fields}</CardContent>
+            <CardActions className={classes.cardActions}>
+              <Button
+                disabled={!isValid || !dirty}
+                variant="contained"
+                color="primary"
+              >
+                {isLoggingIn ? 'Log in' : 'Sign up'}
+              </Button>
+              <FormControlLabel
+                classes={{ label: classes.switchText }}
+                control={
+                  <Switch
+                    checked={isLoggingIn}
+                    onChange={() => handleSwitch(handleReset)}
+                    color="default"
+                  />
+                }
+                label={isLoggingIn ? 'Sign up' : 'Log in'}
+              />
+            </CardActions>
+          </>
+        )}
+      </Formik>
     </>
   );
 };
