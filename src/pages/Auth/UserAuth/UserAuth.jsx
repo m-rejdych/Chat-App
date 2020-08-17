@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   CardHeader,
   CardContent,
@@ -8,8 +9,12 @@ import {
   Switch,
   Button,
   TextField,
+  CircularProgress,
+  Box,
 } from '@material-ui/core';
 import { Formik, Field } from 'formik';
+
+import { signUp, logIn } from '../../../store/actions';
 
 const useStyles = makeStyles((theme) => ({
   header: {
@@ -36,6 +41,8 @@ const useStyles = makeStyles((theme) => ({
 const UserAuth = () => {
   const classes = useStyles();
   const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const loading = useSelector((state) => state.auth.loading);
+  const dispatch = useDispatch();
 
   const initialValues = isLoggingIn
     ? {
@@ -74,28 +81,44 @@ const UserAuth = () => {
     },
   ];
 
-  const fields = fieldsData.map(
-    ({ name, validate, ...rest }) =>
-      name && (
-        <Field key={name} name={name} validate={validate}>
-          {({ field, meta }) => (
-            <TextField
-              {...field}
-              {...rest}
-              className={classes.textField}
-              variant="filled"
-              error={meta.error && meta.touched}
-              helperText={meta.touched && meta.error}
-              fullWidth
-            />
-          )}
-        </Field>
-      ),
+  const fields = loading ? (
+    <Box
+      width="100%"
+      height="100%"
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+    >
+      <CircularProgress size={200} />
+    </Box>
+  ) : (
+    fieldsData.map(
+      ({ name, validate, ...rest }) =>
+        name && (
+          <Field key={name} name={name} validate={validate}>
+            {({ field, meta }) => (
+              <TextField
+                {...field}
+                {...rest}
+                className={classes.textField}
+                variant="filled"
+                error={meta.error && meta.touched}
+                helperText={meta.touched && meta.error}
+                fullWidth
+              />
+            )}
+          </Field>
+        ),
+    )
   );
 
   const handleSwitch = (handleFormReset) => {
     setIsLoggingIn(!isLoggingIn);
     handleFormReset();
+  };
+
+  const handleSubmit = (data) => {
+    isLoggingIn ? dispatch(logIn(data)) : dispatch(signUp(data));
   };
 
   return (
@@ -108,7 +131,7 @@ const UserAuth = () => {
         title={isLoggingIn ? 'Log in' : 'Sign up'}
       />
       <Formik initialValues={initialValues}>
-        {({ isValid, dirty, handleReset }) => (
+        {({ isValid, dirty, handleReset, values }) => (
           <>
             <CardContent className={classes.cardContent}>{fields}</CardContent>
             <CardActions className={classes.cardActions}>
@@ -116,6 +139,7 @@ const UserAuth = () => {
                 disabled={!isValid || !dirty}
                 variant="contained"
                 color="primary"
+                onClick={() => handleSubmit(values)}
               >
                 {isLoggingIn ? 'Log in' : 'Sign up'}
               </Button>
