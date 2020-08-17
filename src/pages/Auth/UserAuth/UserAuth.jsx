@@ -15,6 +15,7 @@ import {
 import { Formik, Field } from 'formik';
 
 import { signUp, logIn } from '../../../store/actions';
+import { KEYS } from '../../../constants';
 
 const useStyles = makeStyles((theme) => ({
   header: {
@@ -140,6 +141,7 @@ const UserAuth = () => {
                 variant="contained"
                 color="primary"
                 onClick={() => handleSubmit(values)}
+                onKeyPress={(e) => e.key === KEYS.ENTER && handleSubmit(values)}
               >
                 {isLoggingIn ? 'Log in' : 'Sign up'}
               </Button>

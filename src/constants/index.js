@@ -3,4 +3,8 @@ const AUTH_TYPES = {
   GUEST: 'GUEST',
 };
 
-export { AUTH_TYPES };
+const KEYS = {
+  ENTER: 'ENTER',
+};
+
+export { AUTH_TYPES, KEYS };

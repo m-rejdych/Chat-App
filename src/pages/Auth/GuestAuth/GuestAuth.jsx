@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import {
   CardHeader,
   CardContent,
@@ -7,6 +8,9 @@ import {
   TextField,
   Button,
 } from '@material-ui/core';
+
+import { guestLogIn } from '../../../store/actions';
+import { KEYS } from '../../../constants';
 
 const useStyles = makeStyles((theme) => ({
   headerText: {
@@ -18,8 +22,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const GuestAuth = () => {
-  const [value, setValue] = useState('');
   const classes = useStyles();
+  const [value, setValue] = useState('');
+  const dispatch = useDispatch();
+
+  const handleSubmit = () => dispatch(guestLogIn(value));
 
   return (
     <>
@@ -41,7 +48,13 @@ const GuestAuth = () => {
         />
       </CardContent>
       <CardActions>
-        <Button variant="contained" color="primary" disabled={value === ''}>
+        <Button
+          onClick={handleSubmit}
+          onKeyPress={(e) => e.key === KEYS.ENTER && handleSubmit()}
+          variant="contained"
+          color="primary"
+          disabled={value === ''}
+        >
           Jump in
         </Button>
       </CardActions>

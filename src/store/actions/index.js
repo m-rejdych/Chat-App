@@ -6,4 +6,5 @@ export {
   logIn,
   logInSuccess,
   logInFail,
+  guestLogIn,
 } from './authActions';

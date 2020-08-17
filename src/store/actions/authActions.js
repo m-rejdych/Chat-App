@@ -24,5 +24,17 @@ const logInFail = (error) => ({
   type: AUTH.LOG_IN_FAIL,
   paylaod: error,
 });
+const guestLogIn = (name) => ({
+  type: AUTH.GUEST_LOG_IN,
+  payload: name,
+});
 
-export { signUp, signUpSuccess, signUpFail, logIn, logInSuccess, logInFail };
+export {
+  signUp,
+  signUpSuccess,
+  signUpFail,
+  logIn,
+  logInSuccess,
+  logInFail,
+  guestLogIn,
+};
