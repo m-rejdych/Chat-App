@@ -102,7 +102,7 @@ const UserAuth = () => {
                 {...field}
                 {...rest}
                 className={classes.textField}
-                variant="filled"
+                variant="outlined"
                 error={meta.error && meta.touched}
                 helperText={meta.touched && meta.error}
                 fullWidth

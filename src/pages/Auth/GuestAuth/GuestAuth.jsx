@@ -40,7 +40,7 @@ const GuestAuth = () => {
       />
       <CardContent className={classes.cardContent}>
         <TextField
-          variant="filled"
+          variant="outlined"
           label="Name"
           value={value}
           onChange={(e) => setValue(e.target.value)}
