@@ -1,5 +1,5 @@
-import React from 'react';
-import classNames from 'classnames';
+import React, { useRef, useEffect } from 'react';
+import gsap from 'gsap';
 import { Paper, Typography, makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
@@ -25,9 +25,21 @@ const useStyles = makeStyles((theme) => ({
 
 const Message = ({ message, author, self }) => {
   const classes = useStyles({ self });
+  const messageRef = useRef(null);
+
+  useEffect(() => {
+    const message = messageRef.current;
+
+    gsap.set(message, { transformOrigin: '50% 50%' });
+    gsap.fromTo(
+      message,
+      { autoAlpha: 0, scale: 0 },
+      { autoAlpha: 1, scale: 1, duration: 0.2, ease: 'power3.inOut' },
+    );
+  }, []);
 
   return (
-    <div className={classes.root}>
+    <div ref={messageRef} className={classes.root}>
       <Typography
         className={classes.name}
         variant="caption"

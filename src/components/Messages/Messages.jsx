@@ -7,7 +7,6 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: '90%',
     height: '95%',
-    overflowY: 'auto',
     display: 'flex',
     flexDirection: 'column',
   },

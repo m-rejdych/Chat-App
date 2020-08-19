@@ -9,7 +9,6 @@ import {
 } from '@material-ui/core';
 
 import Messages from '../../components/Messages';
-import { KEYS } from '../../constants';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    overflowY: 'auto',
   },
   cardActions: {
     backgroundColor: theme.palette.primary.main,
@@ -41,6 +41,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
     alignItems: 'center',
     padding: theme.spacing(3, 0),
+    flexShrink: 0,
   },
   textField: {
     width: '70%',
@@ -51,7 +52,21 @@ const useStyles = makeStyles((theme) => ({
 const Chat = () => {
   const classes = useStyles();
   const [value, setValue] = useState('');
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState([
+    { message: 'foo', name: 'foo' },
+    { message: 'foo', name: 'foo' },
+    { message: 'foo', name: 'foo' },
+    { message: 'foo', name: 'foo' },
+    { message: 'foo', name: 'foo' },
+    { message: 'foo', name: 'foo' },
+    { message: 'foo', name: 'foo' },
+    { message: 'foo', name: 'foo' },
+    { message: 'foo', name: 'foo' },
+    { message: 'foo', name: 'foo' },
+    { message: 'foo', name: 'foo' },
+    { message: 'foo', name: 'foo' },
+    { message: 'foo', name: 'foo' },
+  ]);
 
   const handleClick = () => {
     setValue('');
