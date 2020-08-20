@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { v4 as uuid } from 'uuid';
 import {
   makeStyles,
   Card,
@@ -33,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    overflowY: 'auto',
+    overflowY: 'scroll',
   },
   cardActions: {
     backgroundColor: theme.palette.primary.main,
@@ -53,30 +54,35 @@ const Chat = () => {
   const classes = useStyles();
   const [value, setValue] = useState('');
   const [messages, setMessages] = useState([
-    { message: 'foo', name: 'foo' },
-    { message: 'foo', name: 'foo' },
-    { message: 'foo', name: 'foo' },
-    { message: 'foo', name: 'foo' },
-    { message: 'foo', name: 'foo' },
-    { message: 'foo', name: 'foo' },
-    { message: 'foo', name: 'foo' },
-    { message: 'foo', name: 'foo' },
-    { message: 'foo', name: 'foo' },
-    { message: 'foo', name: 'foo' },
-    { message: 'foo', name: 'foo' },
-    { message: 'foo', name: 'foo' },
-    { message: 'foo', name: 'foo' },
+    { id: uuid(), message: 'foo', author: 'foo' },
+    { id: uuid(), message: 'foo', author: 'foo' },
+    { id: uuid(), message: 'foo', author: 'foo' },
+    { id: uuid(), message: 'foo', author: 'foo' },
+    { id: uuid(), message: 'foo', author: 'foo' },
+    { id: uuid(), message: 'foo', author: 'foo' },
+    { id: uuid(), message: 'foo', author: 'foo' },
+    { id: uuid(), message: 'foo', author: 'foo' },
+    { id: uuid(), message: 'foo', author: 'foo' },
+    { id: uuid(), message: 'foo', author: 'foo' },
+    { id: uuid(), message: 'foo', author: 'foo' },
+    { id: uuid(), message: 'foo', author: 'foo' },
+    { id: uuid(), message: 'foo', author: 'foo' },
   ]);
+  const cardContentRef = useRef(null);
+
+  useEffect(() => {
+    cardContentRef.current.scrollTop = cardContentRef.current.scrollHeight;
+  }, [messages]);
 
   const handleClick = () => {
     setValue('');
-    setMessages([...messages, { message: value, author: 'Frank' }]);
+    setMessages([...messages, { id: uuid(), message: value, author: 'Frank' }]);
   };
 
   return (
     <div className={classes.root}>
       <Card elevation={3} className={classes.card}>
-        <CardContent className={classes.cardContent}>
+        <CardContent ref={cardContentRef} className={classes.cardContent}>
           <Messages messages={messages} />
         </CardContent>
         <CardActions className={classes.cardActions}>
@@ -89,7 +95,7 @@ const Chat = () => {
             onChange={(e) => setValue(e.target.value)}
           />
           <Button
-            disabled={value === ''}
+            disabled={value.trim() === ''}
             onClick={handleClick}
             color="secondary"
           >

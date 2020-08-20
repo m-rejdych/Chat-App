@@ -1,6 +1,7 @@
 import React, { forwardRef } from 'react';
 import { useSelector } from 'react-redux';
 import { Card, makeStyles } from '@material-ui/core';
+import { Redirect } from 'react-router-dom';
 
 import UserAuth from '../../../pages/Auth/UserAuth';
 import GuestAuth from '../../../pages/Auth/GuestAuth';
@@ -26,11 +27,13 @@ const AuthCard = forwardRef(({ isOnTop }, ref) => {
   const classes = useStyles({ isOnTop });
   const userAuth = useSelector((state) => state.cards.userAuth);
   const guestAuth = useSelector((state) => state.cards.guestAuth);
+  const userId = useSelector((state) => state.auth.userId);
 
   return (
     <Card ref={ref} elevation={5} className={classes.root}>
       {userAuth && <UserAuth />}
       {guestAuth && <GuestAuth />}
+      {userId && <Redirect to="/chat" />}
     </Card>
   );
 });

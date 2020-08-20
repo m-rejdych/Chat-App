@@ -33,8 +33,8 @@ const Message = ({ message, author, self }) => {
     gsap.set(message, { transformOrigin: '50% 50%' });
     gsap.fromTo(
       message,
-      { autoAlpha: 0, scale: 0 },
-      { autoAlpha: 1, scale: 1, duration: 0.2, ease: 'power3.inOut' },
+      { autoAlpha: 0, scaleX: 0.3 },
+      { autoAlpha: 1, scaleX: 1, duration: 0.4, ease: 'back' },
     );
   }, []);
 

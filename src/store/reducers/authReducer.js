@@ -24,7 +24,13 @@ const authReducer = (state = initialState, { type, payload }) => {
     case AUTH.LOG_IN_FAIL:
       return { ...state, loading: false, error: payload };
     case AUTH.GUEST_LOG_IN:
-      return { ...state, email: '', userId: '', name: '', guest: payload };
+      return {
+        ...state,
+        email: '',
+        name: '',
+        userId: payload.userId,
+        guest: payload.name,
+      };
     default:
       return state;
   }

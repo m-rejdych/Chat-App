@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { v4 as uuid } from 'uuid';
 import {
   CardHeader,
   CardContent,
@@ -26,7 +27,13 @@ const GuestAuth = () => {
   const [value, setValue] = useState('');
   const dispatch = useDispatch();
 
-  const handleSubmit = () => dispatch(guestLogIn(value));
+  const handleSubmit = () =>
+    dispatch(
+      guestLogIn({
+        name: value,
+        userId: uuid(),
+      }),
+    );
 
   return (
     <>

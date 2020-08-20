@@ -24,9 +24,9 @@ const logInFail = (error) => ({
   type: AUTH.LOG_IN_FAIL,
   paylaod: error,
 });
-const guestLogIn = (name) => ({
+const guestLogIn = (userData) => ({
   type: AUTH.GUEST_LOG_IN,
-  payload: name,
+  payload: userData,
 });
 
 export {

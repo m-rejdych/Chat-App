@@ -19,9 +19,9 @@ const Messages = ({ messages }) => {
     <div className={classes.root}>
       {messages.map((message, index) =>
         index === messages.length - 1 ? (
-          <Message {...message} self />
+          <Message key={message.id} {...message} self />
         ) : (
-          <Message {...message} />
+          <Message key={message.id} {...message} />
         ),
       )}
     </div>
