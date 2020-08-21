@@ -4,7 +4,7 @@ const AUTH_TYPES = {
 };
 
 const KEYS = {
-  ENTER: 'ENTER',
+  ENTER: 'Enter',
 };
 
 export { AUTH_TYPES, KEYS };

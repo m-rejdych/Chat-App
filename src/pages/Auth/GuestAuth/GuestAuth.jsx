@@ -51,16 +51,18 @@ const GuestAuth = () => {
           label="Name"
           value={value}
           onChange={(e) => setValue(e.target.value)}
+          onKeyPress={(e) =>
+            e.key === KEYS.ENTER && value.trim() !== '' && handleSubmit()
+          }
           fullWidth
         />
       </CardContent>
       <CardActions>
         <Button
           onClick={handleSubmit}
-          onKeyPress={(e) => e.key === KEYS.ENTER && handleSubmit()}
           variant="contained"
           color="primary"
-          disabled={value === ''}
+          disabled={value.trim() === ''}
         >
           Jump in
         </Button>

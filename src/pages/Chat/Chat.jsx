@@ -10,6 +10,7 @@ import {
 } from '@material-ui/core';
 
 import Messages from '../../components/Messages';
+import { KEYS } from '../../constants';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -87,12 +88,13 @@ const Chat = () => {
         </CardContent>
         <CardActions className={classes.cardActions}>
           <TextField
-            multiline
             className={classes.textField}
             variant="outlined"
-            rows={2}
             value={value}
             onChange={(e) => setValue(e.target.value)}
+            onKeyPress={(e) =>
+              e.key === KEYS.ENTER && value.trim() !== '' && handleClick()
+            }
           />
           <Button
             disabled={value.trim() === ''}

@@ -82,6 +82,21 @@ const UserAuth = () => {
     },
   ];
 
+  const handleSwitch = (handleFormReset) => {
+    setIsLoggingIn(!isLoggingIn);
+    handleFormReset();
+  };
+
+  const handleSubmit = (data) => {
+    isLoggingIn ? dispatch(logIn(data)) : dispatch(signUp(data));
+  };
+
+  const handleEnterPress = (e, { isValid, values, submitForm }) => {
+    if (e.key === KEYS.ENTER) {
+      isValid ? handleSubmit(values) : submitForm();
+    }
+  };
+
   const fields = loading ? (
     <Box
       width="100%"
@@ -97,7 +112,7 @@ const UserAuth = () => {
       ({ name, validate, ...rest }) =>
         name && (
           <Field key={name} name={name} validate={validate}>
-            {({ field, meta }) => (
+            {({ field, meta, form }) => (
               <TextField
                 {...field}
                 {...rest}
@@ -105,6 +120,7 @@ const UserAuth = () => {
                 variant="outlined"
                 error={meta.error && meta.touched}
                 helperText={meta.touched && meta.error}
+                onKeyPress={(e) => handleEnterPress(e, form)}
                 fullWidth
               />
             )}
@@ -112,15 +128,6 @@ const UserAuth = () => {
         ),
     )
   );
-
-  const handleSwitch = (handleFormReset) => {
-    setIsLoggingIn(!isLoggingIn);
-    handleFormReset();
-  };
-
-  const handleSubmit = (data) => {
-    isLoggingIn ? dispatch(logIn(data)) : dispatch(signUp(data));
-  };
 
   return (
     <>
@@ -141,7 +148,6 @@ const UserAuth = () => {
                 variant="contained"
                 color="primary"
                 onClick={() => handleSubmit(values)}
-                onKeyPress={(e) => e.key === KEYS.ENTER && handleSubmit(values)}
               >
                 {isLoggingIn ? 'Log in' : 'Sign up'}
               </Button>
