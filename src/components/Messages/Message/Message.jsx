@@ -1,4 +1,5 @@
 import React, { useRef, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import gsap from 'gsap';
 import { Paper, Typography, makeStyles } from '@material-ui/core';
 
@@ -6,25 +7,30 @@ const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: '80%',
     margin: theme.spacing(1, 2),
-    alignSelf: ({ self }) => (self ? 'flex-end' : 'flex-start'),
+    alignSelf: ({ userId, currentUserId }) =>
+      currentUserId === userId ? 'flex-end' : 'flex-start',
     display: 'flex',
     flexDirection: 'column',
+    alignItems: ({ userId, currentUserId }) =>
+      currentUserId === userId ? 'flex-end' : 'flex-start',
   },
   paper: {
     padding: theme.spacing(2),
-    backgroundColor: ({ self }) =>
-      self ? theme.palette.primary.main : theme.palette.grey[200],
+    backgroundColor: ({ userId, currentUserId }) =>
+      currentUserId === userId
+        ? theme.palette.primary.main
+        : theme.palette.grey[200],
     borderRadius: 20,
     overflowWrap: 'break-word',
   },
   name: {
-    alignSelf: ({ self }) => (self ? 'flex-end' : 'flex-start'),
     margin: theme.spacing(0, 1.5),
   },
 }));
 
-const Message = ({ message, author, self }) => {
-  const classes = useStyles({ self });
+const Message = ({ message, author, userId }) => {
+  const currentUserId = useSelector((state) => state.auth.userId);
+  const classes = useStyles({ userId, currentUserId });
   const messageRef = useRef(null);
 
   useEffect(() => {

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/core';
 
 import Message from './Message';
@@ -12,18 +13,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Messages = ({ messages }) => {
+const Messages = () => {
   const classes = useStyles();
+  const messages = useSelector((state) => state.messages.messages);
 
   return (
     <div className={classes.root}>
-      {messages.map((message, index) =>
-        index === messages.length - 1 ? (
-          <Message key={message.id} {...message} self />
-        ) : (
-          <Message key={message.id} {...message} />
-        ),
-      )}
+      {messages.map((message) => (
+        <Message key={message.id} {...message} />
+      ))}
     </div>
   );
 };

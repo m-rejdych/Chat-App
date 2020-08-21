@@ -8,3 +8,9 @@ export {
   logInFail,
   guestLogIn,
 } from './authActions';
+export {
+  addMessage,
+  addMessageSuccess,
+  addMessageFail,
+  setMessages,
+} from './messagesActions';

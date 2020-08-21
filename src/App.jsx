@@ -1,5 +1,6 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core';
 
 import Home from './pages/Home';
@@ -16,11 +17,12 @@ const useStyles = makeStyles((theme) => ({
 
 const App = () => {
   const classes = useStyles();
+  const userId = useSelector((state) => state.auth.userId);
 
   return (
     <div className={classes.root}>
       <Switch>
-        <Route path="/chat" component={Chat} />
+        {userId && <Route path="/chat/:room" component={Chat} />}
         <Route path="/" component={Home} />
       </Switch>
       <Footer />

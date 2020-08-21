@@ -30,7 +30,7 @@ const GuestAuth = () => {
   const handleSubmit = () =>
     dispatch(
       guestLogIn({
-        name: value,
+        name: `${value}(guest)`,
         userId: uuid(),
       }),
     );

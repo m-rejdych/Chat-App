@@ -33,7 +33,7 @@ const AuthCard = forwardRef(({ isOnTop }, ref) => {
     <Card ref={ref} elevation={5} className={classes.root}>
       {userAuth && <UserAuth />}
       {guestAuth && <GuestAuth />}
-      {userId && <Redirect to="/chat" />}
+      {userId && <Redirect to="/chat/general" />}
     </Card>
   );
 });

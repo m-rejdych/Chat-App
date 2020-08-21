@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { v4 as uuid } from 'uuid';
 import {
   makeStyles,
@@ -11,6 +12,8 @@ import {
 
 import Messages from '../../components/Messages';
 import { KEYS } from '../../constants';
+import { addMessage, setMessages } from '../../store/actions';
+import { db } from '../../firebase';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -51,40 +54,51 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Chat = () => {
+const Chat = ({ match }) => {
   const classes = useStyles();
   const [value, setValue] = useState('');
-  const [messages, setMessages] = useState([
-    { id: uuid(), message: 'foo', author: 'foo' },
-    { id: uuid(), message: 'foo', author: 'foo' },
-    { id: uuid(), message: 'foo', author: 'foo' },
-    { id: uuid(), message: 'foo', author: 'foo' },
-    { id: uuid(), message: 'foo', author: 'foo' },
-    { id: uuid(), message: 'foo', author: 'foo' },
-    { id: uuid(), message: 'foo', author: 'foo' },
-    { id: uuid(), message: 'foo', author: 'foo' },
-    { id: uuid(), message: 'foo', author: 'foo' },
-    { id: uuid(), message: 'foo', author: 'foo' },
-    { id: uuid(), message: 'foo', author: 'foo' },
-    { id: uuid(), message: 'foo', author: 'foo' },
-    { id: uuid(), message: 'foo', author: 'foo' },
-  ]);
+  const messages = useSelector((state) => state.messages.messages);
+  const userId = useSelector((state) => state.auth.userId);
+  const name = useSelector((state) => state.auth.name);
+  const guest = useSelector((state) => state.auth.guest);
+  const dispatch = useDispatch();
   const cardContentRef = useRef(null);
 
   useEffect(() => {
     cardContentRef.current.scrollTop = cardContentRef.current.scrollHeight;
   }, [messages]);
 
+  useEffect(() => {
+    const collection = match.params.room;
+    db.collection(collection).onSnapshot((response) => {
+      const fetchedMessages = [];
+      response.forEach((doc) => fetchedMessages.push(doc.data()));
+      dispatch(
+        setMessages(
+          fetchedMessages.sort((a, b) => (a.postDate > b.postDate ? 1 : -1)),
+        ),
+      );
+    });
+  }, [dispatch, match.params.room]);
+
   const handleClick = () => {
+    const collection = match.params.room;
+    const message = {
+      id: uuid(),
+      message: value,
+      userId,
+      author: name || guest,
+      postDate: new Date(),
+    };
+    dispatch(addMessage({ collection, message }));
     setValue('');
-    setMessages([...messages, { id: uuid(), message: value, author: 'Frank' }]);
   };
 
   return (
     <div className={classes.root}>
       <Card elevation={3} className={classes.card}>
         <CardContent ref={cardContentRef} className={classes.cardContent}>
-          <Messages messages={messages} />
+          <Messages />
         </CardContent>
         <CardActions className={classes.cardActions}>
           <TextField
