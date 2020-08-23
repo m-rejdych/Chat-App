@@ -23,7 +23,8 @@ const App = () => {
     <div className={classes.root}>
       <Switch>
         {userId && <Route path="/chat/:room" component={Chat} />}
-        <Route path="/" component={Home} />
+        <Route exact path="/" component={Home} />
+        <Redirect to="/" />
       </Switch>
       <Footer />
     </div>
