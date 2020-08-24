@@ -12,13 +12,13 @@ import { db } from '../../firebase';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    position: 'relative',
-    bottom: 21.5,
     padding: theme.spacing(2),
-    marginRight: theme.spacing(2),
-    height: 600,
+    height: 290,
     backgroundColor: '#fff',
     borderRadius: 25,
+  },
+  overflowYAuto: {
+    overflowY: 'auto',
   },
 }));
 
@@ -39,7 +39,7 @@ const RoomsContainer = ({ collection }) => {
   return (
     <Card className={classes.root} elevation={3}>
       <CardHeader title="Rooms" />
-      <CardContent>
+      <CardContent className={classes.overflowYAuto}>
         {rooms ? (
           <Rooms rooms={rooms} collection={collection} />
         ) : (

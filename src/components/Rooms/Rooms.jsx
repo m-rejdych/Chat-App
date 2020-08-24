@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { List } from '@material-ui/core';
 
 import Room from './Room';

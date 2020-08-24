@@ -3,6 +3,7 @@ import { Box } from '@material-ui/core';
 
 import ChatContainer from '../../components/ChatContainer';
 import RoomsContainer from '../../components/RoomsContainer/RoomsContainer';
+import OnlineUsersContainer from '../../components/OnlineUsersContainer/OnlineUsersContainer';
 
 const Chat = ({
   match: {
@@ -16,7 +17,18 @@ const Chat = ({
     justifyContent="center"
     alignItems="center"
   >
-    <RoomsContainer collection={room} />
+    <Box
+      position="relative"
+      bottom={21.5}
+      mr={2}
+      display="flex"
+      flexDirection="column"
+      height={600}
+      justifyContent="space-evenly"
+    >
+      <RoomsContainer collection={room} />
+      <OnlineUsersContainer />
+    </Box>
     <ChatContainer collection={room} />
   </Box>
 );
