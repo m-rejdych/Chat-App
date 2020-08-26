@@ -10,15 +10,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const OnlineUsersContainer = () => {
+const ActiveUsersContainer = () => {
   const classes = useStyles();
 
   return (
     <Card elevation={3} className={classes.root}>
-      <CardHeader title="Online users" />
+      <CardHeader title="Active users" />
       <CardContent></CardContent>
     </Card>
   );
 };
 
-export default OnlineUsersContainer;
+export default ActiveUsersContainer;
