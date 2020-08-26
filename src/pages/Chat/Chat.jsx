@@ -3,7 +3,6 @@ import { Box } from '@material-ui/core';
 
 import ChatContainer from '../../components/ChatContainer';
 import RoomsContainer from '../../components/RoomsContainer/RoomsContainer';
-import ActiveUsersContainer from '../../components/ActiveUsersContainer/ActiveUsersContainer';
 
 const Chat = ({
   match: {
@@ -27,7 +26,6 @@ const Chat = ({
       justifyContent="space-evenly"
     >
       <RoomsContainer collection={room} />
-      <ActiveUsersContainer />
     </Box>
     <ChatContainer collection={room} />
   </Box>

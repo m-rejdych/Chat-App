@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   makeStyles,
   Card,
@@ -13,14 +14,17 @@ import {
   Button,
 } from '@material-ui/core';
 import SettingsIcon from '@material-ui/icons/Settings';
+import { v4 as uuid } from 'uuid';
 
 import Rooms from '../Rooms';
 import { db } from '../../firebase';
+import { setRooms, addRoom } from '../../store/actions';
+import { KEYS } from '../../constants';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     padding: theme.spacing(2),
-    height: 290,
+    height: 500,
     backgroundColor: '#fff',
     borderRadius: 25,
   },
@@ -29,14 +33,21 @@ const useStyles = makeStyles((theme) => ({
   },
   popoverRoot: {
     padding: theme.spacing(3),
+    display: 'flex',
+    flexDirection: 'column',
+    '& > *:not(:last-child)': {
+      marginBottom: theme.spacing(2),
+    },
   },
 }));
 
 const RoomsContainer = ({ collection }) => {
   const classes = useStyles();
-  const [rooms, setRooms] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
   const [value, setValue] = useState('');
+  const rooms = useSelector((state) => state.rooms.rooms);
+  const loading = useSelector((state) => state.rooms.loading);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     db.collection('rooms').onSnapshot((response) => {
@@ -44,17 +55,31 @@ const RoomsContainer = ({ collection }) => {
       response.forEach((room) => {
         fetchedRooms.push(room.data());
       });
-      setRooms(fetchedRooms);
+      dispatch(setRooms(fetchedRooms));
     });
   }, []);
 
-  const handleAddRoom = () => {};
+  useEffect(() => () => value && setValue(''), []);
+
+  const handleClose = () => setAnchorEl(null);
+
+  const handleAddRoom = () => {
+    dispatch(addRoom({ name: value, id: uuid() }));
+    handleClose();
+  };
 
   const popoverContent = (
     <Paper className={classes.popoverRoot}>
       <Typography variant="body1">Add new channel</Typography>
-      <TextField value={value} onChange={(e) => setValue(e.target.value)} />
+      <TextField
+        variant="outlined"
+        label="Room name"
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        onKeyPress={(e) => e.key === KEYS.ENTER && handleAddRoom()}
+      />
       <Button
+        color="secondary"
         variant="contained"
         disabled={value.trim() === ''}
         onClick={handleAddRoom}
@@ -81,11 +106,11 @@ const RoomsContainer = ({ collection }) => {
           anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
           transformOrigin={{ vertical: 'top', horizontal: 'center' }}
           open={!!anchorEl}
-          onClose={() => setAnchorEl(null)}
+          onClose={handleClose}
         >
           {popoverContent}
         </Popover>
-        {rooms ? (
+        {rooms.length > 0 && !loading ? (
           <Rooms rooms={rooms} collection={collection} />
         ) : (
           <CircularProgress />

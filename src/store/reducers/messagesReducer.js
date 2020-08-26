@@ -2,6 +2,7 @@ import { MESSAGES } from '../constants';
 
 const initialState = {
   messages: [],
+  rooms: [],
   loading: false,
   error: null,
 };
