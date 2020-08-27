@@ -1,4 +1,4 @@
-import { MESSAGES, ROOMS } from '../constants';
+import { ROOMS } from '../constants';
 
 const initialState = {
   rooms: [],
@@ -19,6 +19,12 @@ const roomsReducer = (state = initialState, { type, payload }) => {
         error: null,
       };
     case ROOMS.ADD_ROOM_FAIL:
+      return { ...state, loading: false, error: payload };
+    case ROOMS.DELETE_ROOM:
+      return { ...state, loading: true };
+    case ROOMS.DELETE_ROOM_SUCCESS:
+      return { ...state, loading: false, error: null };
+    case ROOMS.DELETE_ROOM_FAIL:
       return { ...state, loading: false, error: payload };
     default:
       return state;

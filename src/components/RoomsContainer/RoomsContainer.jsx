@@ -13,7 +13,7 @@ import {
   TextField,
   Button,
 } from '@material-ui/core';
-import SettingsIcon from '@material-ui/icons/Settings';
+import AddIcon from '@material-ui/icons/Add';
 import { v4 as uuid } from 'uuid';
 
 import Rooms from '../Rooms';
@@ -25,11 +25,14 @@ const useStyles = makeStyles((theme) => ({
   root: {
     padding: theme.spacing(2),
     height: 500,
+    minWidth: 250,
+    maxWidth: 350,
     backgroundColor: '#fff',
     borderRadius: 25,
+    overflow: 'auto',
   },
-  overflowYAuto: {
-    overflowY: 'auto',
+  overflowAuto: {
+    overflow: 'auto',
   },
   popoverRoot: {
     padding: theme.spacing(3),
@@ -61,7 +64,10 @@ const RoomsContainer = ({ collection }) => {
 
   useEffect(() => () => value && setValue(''), []);
 
-  const handleClose = () => setAnchorEl(null);
+  const handleClose = () => {
+    setAnchorEl(null);
+    setValue('');
+  };
 
   const handleAddRoom = () => {
     dispatch(addRoom({ name: value, id: uuid() }));
@@ -95,11 +101,11 @@ const RoomsContainer = ({ collection }) => {
         title="Rooms"
         action={
           <IconButton onClick={(e) => setAnchorEl(e.currentTarget)}>
-            <SettingsIcon />
+            <AddIcon />
           </IconButton>
         }
       />
-      <CardContent className={classes.overflowYAuto}>
+      <CardContent className={classes.overflowAuto}>
         <Popover
           id={anchorEl && 'popover'}
           anchorEl={anchorEl}
@@ -111,7 +117,7 @@ const RoomsContainer = ({ collection }) => {
           {popoverContent}
         </Popover>
         {rooms.length > 0 && !loading ? (
-          <Rooms rooms={rooms} collection={collection} />
+          <Rooms collection={collection} />
         ) : (
           <CircularProgress />
         )}

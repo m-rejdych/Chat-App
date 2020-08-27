@@ -14,4 +14,12 @@ export {
   addMessageFail,
   setMessages,
 } from './messagesActions';
-export { setRooms, addRoom, addRoomSuccess, addRoomFail } from './roomsActions';
+export {
+  setRooms,
+  addRoom,
+  addRoomSuccess,
+  addRoomFail,
+  deleteRoom,
+  deleteRoomSuccess,
+  deleteRoomFail,
+} from './roomsActions';

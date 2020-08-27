@@ -20,4 +20,27 @@ const addRoomFail = (error) => ({
   payload: error,
 });
 
-export { setRooms, addRoom, addRoomSuccess, addRoomFail };
+const deleteRoom = (id) => ({
+  type: ROOMS.DELETE_ROOM,
+  payload: id,
+});
+
+const deleteRoomSuccess = (id) => ({
+  type: ROOMS.DELETE_ROOM_SUCCESS,
+  payload: id,
+});
+
+const deleteRoomFail = (error) => ({
+  type: ROOMS.DELETE_ROOM_FAIL,
+  payload: error,
+});
+
+export {
+  setRooms,
+  addRoom,
+  addRoomSuccess,
+  addRoomFail,
+  deleteRoom,
+  deleteRoomSuccess,
+  deleteRoomFail,
+};
