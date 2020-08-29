@@ -1,4 +1,6 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core';
 
 import Cards from '../../components/Cards';
@@ -16,9 +18,11 @@ const useStyles = makeStyles((theme) => ({
 
 const Home = () => {
   const classes = useStyles();
+  const userId = useSelector((state) => state.auth.userId);
 
   return (
     <div className={classes.root}>
+      {userId && <Redirect to="/chat/general" />}
       <Cards />
     </div>
   );

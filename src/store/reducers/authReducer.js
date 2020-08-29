@@ -31,6 +31,8 @@ const authReducer = (state = initialState, { type, payload }) => {
         userId: payload.userId,
         guest: payload.name,
       };
+    case AUTH.SET_USER:
+      return { ...state, ...payload };
     default:
       return state;
   }

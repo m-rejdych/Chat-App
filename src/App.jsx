@@ -1,7 +1,10 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core';
+
+import { setUser } from './store/actions';
+import { auth } from './firebase';
 
 import Home from './pages/Home';
 import Chat from './pages/Chat';
@@ -18,6 +21,22 @@ const useStyles = makeStyles((theme) => ({
 const App = () => {
   const classes = useStyles();
   const userId = useSelector((state) => state.auth.userId);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    auth.onAuthStateChanged((user) => {
+      if (!userId && user) {
+        const { email, uid, displayName } = user;
+        dispatch(
+          setUser({
+            userId: uid,
+            name: displayName,
+            email,
+          }),
+        );
+      }
+    });
+  }, []);
 
   return (
     <div className={classes.root}>

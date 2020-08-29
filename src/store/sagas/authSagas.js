@@ -2,17 +2,17 @@ import { put, takeEvery } from 'redux-saga/effects';
 
 import { AUTH } from '../constants';
 import { signUpSuccess, signUpFail, logInSuccess, logInFail } from '../actions';
-import { auth } from '../../firebase';
+import { auth, authPresistance } from '../../firebase';
 
 function* handleSignUp({ payload: { email, password, name } }) {
   try {
+    yield auth.setPersistence(authPresistance.SESSION);
     const {
       user: { uid },
     } = yield auth.createUserWithEmailAndPassword(email, password);
     yield auth.currentUser.updateProfile({
       displayName: name,
     });
-    console.log(auth.currentUser);
     yield put(signUpSuccess({ email, password, name, userId: uid }));
   } catch (error) {
     yield put(signUpFail(error.message));
@@ -21,6 +21,7 @@ function* handleSignUp({ payload: { email, password, name } }) {
 
 function* handleLogIn({ payload: { email, password } }) {
   try {
+    yield auth.setPersistence(authPresistance.SESSION);
     const {
       user: { displayName, uid },
     } = yield auth.signInWithEmailAndPassword(email, password);
