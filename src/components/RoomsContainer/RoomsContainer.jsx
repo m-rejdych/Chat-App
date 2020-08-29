@@ -48,7 +48,6 @@ const RoomsContainer = ({ collection }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const [value, setValue] = useState('');
-  const rooms = useSelector((state) => state.rooms.rooms);
   const loading = useSelector((state) => state.rooms.loading);
   const dispatch = useDispatch();
 
@@ -58,7 +57,9 @@ const RoomsContainer = ({ collection }) => {
       response.forEach((room) => {
         fetchedRooms.push(room.data());
       });
-      dispatch(setRooms(fetchedRooms));
+      dispatch(
+        setRooms(fetchedRooms.sort((a, b) => (a.name > b.name ? 1 : -1))),
+      );
     });
   }, []);
 
@@ -116,11 +117,8 @@ const RoomsContainer = ({ collection }) => {
         >
           {popoverContent}
         </Popover>
-        {rooms.length > 0 && !loading ? (
-          <Rooms collection={collection} />
-        ) : (
-          <CircularProgress />
-        )}
+        <Rooms collection={collection} />
+        {loading && <CircularProgress />}
       </CardContent>
     </Card>
   );
