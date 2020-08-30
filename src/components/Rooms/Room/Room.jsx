@@ -18,7 +18,7 @@ const useStyles = makeStyles({
   },
 });
 
-const Room = ({ id, name, selected }) => {
+const Room = ({ id, name, selected, handleClose }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
@@ -30,6 +30,7 @@ const Room = ({ id, name, selected }) => {
       rel="noopener"
       to={`/chat/${name}`}
       selected={selected}
+      onClick={handleClose}
     >
       <ListItemText className={classes.text} primary={`#${name}`} />
       <ListItemSecondaryAction>

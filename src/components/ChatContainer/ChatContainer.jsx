@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuid } from 'uuid';
 import {
+  IconButton,
   Button,
   Card,
   CardActions,
@@ -9,6 +10,8 @@ import {
   makeStyles,
   TextField,
 } from '@material-ui/core';
+import SendIcon from '@material-ui/icons/Send';
+import ForumIcon from '@material-ui/icons/Forum';
 
 import Messages from '../Messages';
 import { KEYS } from '../../constants';
@@ -25,6 +28,7 @@ const useStyles = makeStyles((theme) => ({
     height: 600,
     backgroundColor: '#fff',
     borderRadius: 25,
+    overflowX: 'visible',
   },
   cardContent: {
     flexGrow: 1,
@@ -44,6 +48,11 @@ const useStyles = makeStyles((theme) => ({
   textField: {
     width: '70%',
     backgroundColor: '#fff',
+  },
+  roomsButton: {
+    position: 'absolute',
+    top: 0,
+    right: '100%',
   },
 }));
 
@@ -87,6 +96,9 @@ const ChatContainer = ({ collection }) => {
 
   return (
     <Card elevation={3} className={classes.root}>
+      <Button className={classes.roomsButton} startIcon={<ForumIcon />}>
+        Rooms
+      </Button>
       <CardContent ref={cardContentRef} className={classes.cardContent}>
         <Messages />
       </CardContent>
@@ -100,13 +112,13 @@ const ChatContainer = ({ collection }) => {
             e.key === KEYS.ENTER && value.trim() !== '' && handleClick()
           }
         />
-        <Button
+        <IconButton
           disabled={value.trim() === ''}
           onClick={handleClick}
           color="secondary"
         >
-          Send
-        </Button>
+          <SendIcon />
+        </IconButton>
       </CardActions>
     </Card>
   );

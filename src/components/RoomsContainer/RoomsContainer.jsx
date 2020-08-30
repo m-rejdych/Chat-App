@@ -12,6 +12,7 @@ import {
   Paper,
   TextField,
   Button,
+  Drawer,
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import { v4 as uuid } from 'uuid';
@@ -22,18 +23,6 @@ import { setRooms, addRoom } from '../../store/actions';
 import { KEYS } from '../../constants';
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    padding: theme.spacing(2),
-    height: 500,
-    minWidth: 250,
-    maxWidth: 350,
-    backgroundColor: '#fff',
-    borderRadius: 25,
-    overflow: 'auto',
-  },
-  overflowAuto: {
-    overflow: 'auto',
-  },
   popoverRoot: {
     padding: theme.spacing(3),
     display: 'flex',
@@ -42,9 +31,15 @@ const useStyles = makeStyles((theme) => ({
       marginBottom: theme.spacing(2),
     },
   },
+  headerContainer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: theme.spacing(1.5, 3),
+  },
 }));
 
-const RoomsContainer = ({ collection }) => {
+const RoomsContainer = ({ collection, open, onClose }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const [value, setValue] = useState('');
@@ -77,7 +72,7 @@ const RoomsContainer = ({ collection }) => {
 
   const popoverContent = (
     <Paper className={classes.popoverRoot}>
-      <Typography variant="body1">Add new channel</Typography>
+      <Typography variant="body1">Add new room</Typography>
       <TextField
         variant="outlined"
         label="Room name"
@@ -97,30 +92,26 @@ const RoomsContainer = ({ collection }) => {
   );
 
   return (
-    <Card className={classes.root} elevation={3}>
-      <CardHeader
-        title="Rooms"
-        action={
-          <IconButton onClick={(e) => setAnchorEl(e.currentTarget)}>
-            <AddIcon />
-          </IconButton>
-        }
-      />
-      <CardContent className={classes.overflowAuto}>
-        <Popover
-          id={anchorEl && 'popover'}
-          anchorEl={anchorEl}
-          anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-          transformOrigin={{ vertical: 'top', horizontal: 'center' }}
-          open={!!anchorEl}
-          onClose={handleClose}
-        >
-          {popoverContent}
-        </Popover>
-        <Rooms collection={collection} />
-        {loading && <CircularProgress />}
-      </CardContent>
-    </Card>
+    <Drawer open={open} onClose={onClose} anchor="left">
+      <div className={classes.headerContainer}>
+        <Typography variant="h5">Rooms</Typography>
+        <IconButton onClick={(e) => setAnchorEl(e.currentTarget)}>
+          <AddIcon />
+        </IconButton>
+      </div>
+      <Rooms collection={collection} handleClose={onClose} />
+      {loading && <CircularProgress />}
+      <Popover
+        id={anchorEl && 'popover'}
+        anchorEl={anchorEl}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'center' }}
+        open={!!anchorEl}
+        onClose={handleClose}
+      >
+        {popoverContent}
+      </Popover>
+    </Drawer>
   );
 };
 
