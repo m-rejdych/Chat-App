@@ -9,6 +9,7 @@ import {
   CardContent,
   makeStyles,
   TextField,
+  Fab,
 } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
 import ForumIcon from '@material-ui/icons/Forum';
@@ -24,11 +25,20 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     bottom: 21.5,
-    width: 500,
-    height: 600,
+    minWidth: 500,
+    minHeight: 600,
+    width: '35vw',
+    height: '83vh',
     backgroundColor: '#fff',
     borderRadius: 25,
     overflowX: 'visible',
+    [theme.breakpoints.down('xs')]: {
+      height: 'calc(100% - 43px)',
+      width: '100%',
+      borderRadius: 0,
+      minWidth: 'initial',
+      minHeight: 'initial',
+    },
   },
   cardContent: {
     flexGrow: 1,
@@ -51,12 +61,17 @@ const useStyles = makeStyles((theme) => ({
   },
   roomsButton: {
     position: 'absolute',
-    top: 0,
-    right: '100%',
+    top: theme.spacing(2),
+    right: theme.spacing(2),
+    zIndex: 10,
+    visibility: 'hidden',
+    [theme.breakpoints.down('xs')]: {
+      visibility: 'visible',
+    },
   },
 }));
 
-const ChatContainer = ({ collection }) => {
+const ChatContainer = ({ collection, openDrawer }) => {
   const classes = useStyles();
   const [value, setValue] = useState('');
   const messages = useSelector((state) => state.messages.messages);
@@ -96,9 +111,13 @@ const ChatContainer = ({ collection }) => {
 
   return (
     <Card elevation={3} className={classes.root}>
-      <Button className={classes.roomsButton} startIcon={<ForumIcon />}>
-        Rooms
-      </Button>
+      <Fab
+        onClick={openDrawer}
+        className={classes.roomsButton}
+        color="secondary"
+      >
+        <ForumIcon />
+      </Fab>
       <CardContent ref={cardContentRef} className={classes.cardContent}>
         <Messages />
       </CardContent>

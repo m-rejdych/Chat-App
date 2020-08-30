@@ -2,9 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   makeStyles,
-  Card,
-  CardContent,
-  CardHeader,
   CircularProgress,
   IconButton,
   Popover,
@@ -13,6 +10,7 @@ import {
   TextField,
   Button,
   Drawer,
+  useMediaQuery,
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import { v4 as uuid } from 'uuid';
@@ -44,6 +42,7 @@ const RoomsContainer = ({ collection, open, onClose }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [value, setValue] = useState('');
   const loading = useSelector((state) => state.rooms.loading);
+  const xs = useMediaQuery((theme) => theme.breakpoints.down('xs'));
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -92,7 +91,7 @@ const RoomsContainer = ({ collection, open, onClose }) => {
   );
 
   return (
-    <Drawer open={open} onClose={onClose} anchor="left">
+    <Drawer open={open} onClose={onClose} anchor={xs ? 'right' : 'left'}>
       <div className={classes.headerContainer}>
         <Typography variant="h5">Rooms</Typography>
         <IconButton onClick={(e) => setAnchorEl(e.currentTarget)}>
