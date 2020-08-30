@@ -26,6 +26,11 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     borderRadius: 25,
     zIndex: ({ isOnTop }) => (isOnTop ? 2 : 1),
+    [theme.breakpoints.down('xs')]: {
+      left: 0,
+      bottom: 0,
+      borderRadius: 0,
+    },
   },
   svg: {
     width: 300,

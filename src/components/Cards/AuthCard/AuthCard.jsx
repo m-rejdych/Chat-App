@@ -20,6 +20,11 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     borderRadius: 25,
     zIndex: ({ isOnTop }) => (isOnTop ? 2 : 1),
+    [theme.breakpoints.down('xs')]: {
+      left: 0,
+      bottom: 0,
+      borderRadius: 0,
+    },
   },
 }));
 

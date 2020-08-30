@@ -21,6 +21,12 @@ import { setRooms, addRoom } from '../../store/actions';
 import { KEYS } from '../../constants';
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    width: 300,
+    [theme.breakpoints.down('xs')]: {
+      width: '60%',
+    },
+  },
   popoverRoot: {
     padding: theme.spacing(3),
     display: 'flex',
@@ -91,7 +97,12 @@ const RoomsContainer = ({ collection, open, onClose }) => {
   );
 
   return (
-    <Drawer open={open} onClose={onClose} anchor={xs ? 'right' : 'left'}>
+    <Drawer
+      open={open}
+      onClose={onClose}
+      anchor={xs ? 'right' : 'left'}
+      classes={{ paper: classes.root }}
+    >
       <div className={classes.headerContainer}>
         <Typography variant="h5">Rooms</Typography>
         <IconButton onClick={(e) => setAnchorEl(e.currentTarget)}>

@@ -3,13 +3,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuid } from 'uuid';
 import {
   IconButton,
-  Button,
   Card,
   CardActions,
   CardContent,
   makeStyles,
   TextField,
   Fab,
+  useMediaQuery,
 } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
 import ForumIcon from '@material-ui/icons/Forum';
@@ -64,10 +64,6 @@ const useStyles = makeStyles((theme) => ({
     top: theme.spacing(2),
     right: theme.spacing(2),
     zIndex: 10,
-    visibility: 'hidden',
-    [theme.breakpoints.down('xs')]: {
-      visibility: 'visible',
-    },
   },
 }));
 
@@ -78,6 +74,7 @@ const ChatContainer = ({ collection, openDrawer }) => {
   const userId = useSelector((state) => state.auth.userId);
   const name = useSelector((state) => state.auth.name);
   const guest = useSelector((state) => state.auth.guest);
+  const xs = useMediaQuery((theme) => theme.breakpoints.down('xs'));
   const dispatch = useDispatch();
   const cardContentRef = useRef(null);
 
@@ -111,13 +108,15 @@ const ChatContainer = ({ collection, openDrawer }) => {
 
   return (
     <Card elevation={3} className={classes.root}>
-      <Fab
-        onClick={openDrawer}
-        className={classes.roomsButton}
-        color="secondary"
-      >
-        <ForumIcon />
-      </Fab>
+      {xs && (
+        <Fab
+          onClick={openDrawer}
+          className={classes.roomsButton}
+          color="secondary"
+        >
+          <ForumIcon />
+        </Fab>
+      )}
       <CardContent ref={cardContentRef} className={classes.cardContent}>
         <Messages />
       </CardContent>

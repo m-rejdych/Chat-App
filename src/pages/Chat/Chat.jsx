@@ -11,7 +11,7 @@ const Chat = ({
   },
 }) => {
   const [roomsOpen, setRoomsOpen] = useState(false);
-  const xs = useMediaQuery((theme) => theme.breakpoints.down('xs'));
+  const sm = useMediaQuery((theme) => theme.breakpoints.up('sm'));
 
   return (
     <Box
@@ -26,7 +26,7 @@ const Chat = ({
         open={roomsOpen}
         onClose={() => setRoomsOpen(false)}
       />
-      {xs || (
+      {sm && (
         <Box height="83vh" mr={2}>
           <Button
             onClick={() => setRoomsOpen(true)}
