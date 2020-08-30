@@ -33,6 +33,8 @@ const authReducer = (state = initialState, { type, payload }) => {
       };
     case AUTH.SET_USER:
       return { ...state, ...payload };
+    case AUTH.RESET_ERROR:
+      return { ...state, error: null };
     default:
       return state;
   }

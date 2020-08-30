@@ -14,12 +14,17 @@ import {
 } from '@material-ui/core';
 import { Formik, Field } from 'formik';
 
-import { signUp, logIn } from '../../../store/actions';
+import { signUp, logIn, resetError } from '../../../store/actions';
 import { KEYS } from '../../../constants';
 
 const useStyles = makeStyles((theme) => ({
   header: {
     color: '#fff',
+    textAlign: 'center',
+  },
+  subheader: {
+    color: theme.palette.error.main,
+    marginTop: theme.spacing(3),
   },
   switchText: {
     fontSize: 14,
@@ -43,6 +48,7 @@ const UserAuth = () => {
   const classes = useStyles();
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const loading = useSelector((state) => state.auth.loading);
+  const errorMessage = useSelector((state) => state.auth.error);
   const dispatch = useDispatch();
 
   const initialValues = isLoggingIn
@@ -85,6 +91,7 @@ const UserAuth = () => {
   const handleSwitch = (handleFormReset) => {
     setIsLoggingIn(!isLoggingIn);
     handleFormReset();
+    dispatch(resetError());
   };
 
   const handleSubmit = (data) => {
@@ -136,7 +143,9 @@ const UserAuth = () => {
           variant: 'h4',
           className: classes.header,
         }}
+        subheaderTypographyProps={{ className: classes.subheader }}
         title={isLoggingIn ? 'Log in' : 'Sign up'}
+        subheader={errorMessage}
       />
       <Formik initialValues={initialValues}>
         {({ isValid, dirty, handleReset, values }) => (
