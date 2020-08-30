@@ -8,6 +8,7 @@ export {
   logInFail,
   guestLogIn,
   setUser,
+  resetError,
 } from './authActions';
 export {
   addMessage,

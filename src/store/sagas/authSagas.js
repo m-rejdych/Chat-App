@@ -27,7 +27,7 @@ function* handleLogIn({ payload: { email, password } }) {
     } = yield auth.signInWithEmailAndPassword(email, password);
     yield put(logInSuccess({ email, name: displayName, userId: uid }));
   } catch (error) {
-    yield put(logInFail(error));
+    yield put(logInFail(error.message));
   }
 }
 

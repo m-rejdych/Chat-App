@@ -27,7 +27,7 @@ const logInSuccess = (userData) => ({
 
 const logInFail = (error) => ({
   type: AUTH.LOG_IN_FAIL,
-  paylaod: error,
+  payload: error,
 });
 
 const guestLogIn = (userData) => ({
@@ -40,6 +40,10 @@ const setUser = (userData) => ({
   payload: userData,
 });
 
+const resetError = () => ({
+  type: AUTH.RESET_ERROR,
+});
+
 export {
   signUp,
   signUpSuccess,
@@ -49,4 +53,5 @@ export {
   logInFail,
   guestLogIn,
   setUser,
+  resetError,
 };
